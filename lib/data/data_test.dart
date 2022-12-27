@@ -1,3 +1,5 @@
+import 'dart:async';
+
 var books = [
   Books(
       1,
@@ -32,6 +34,11 @@ var books = [
       false,
       false),
 ];
+
+var users = [
+  Users(1, "PhamQuang", "phamquang", "quangpham2kst.gmail.com",
+      "Phan Dinh Giot - Phuong Liet - Thanh Xuan - Ha Noi")
+];
 var category = [
   {"id": 1, "name": "Love Story", "isActive": false, "sortOrder": 1},
   {"id": 2, "name": "Horror", "isActive": false, "sortOrder": 2},
@@ -57,6 +64,15 @@ List<Books> bookRelated(int id) {
   return books.where((element) => element.id != id).toList();
 }
 
+class Users {
+  int id;
+  String name;
+  String password;
+  String email;
+  String address;
+  Users(this.id, this.name, this.password, this.email, this.address);
+}
+
 class Books {
   int id;
   String name;
@@ -67,4 +83,115 @@ class Books {
   bool isReadMore;
   Books(this.id, this.name, this.description, this.author, this.image,
       this.favorite, this.isReadMore);
+}
+
+class SignInBloc {
+  StreamController _user = StreamController();
+  StreamController _pass = StreamController();
+
+  Stream get userStream => _user.stream;
+  Stream get passStream => _pass.stream;
+
+  bool isValid(String user, String pass) {
+    if (Validation.isValidUser(user)) {
+      _user.sink.addError("Account invalid!");
+      return false;
+    }
+    _user.sink.add("OK");
+    if (Validation.isValidPass(pass)) {
+      _pass.sink.addError("Password invalid!");
+      return false;
+    }
+    _pass.sink.add("OK");
+    return true;
+  }
+
+  bool signIn(String user, String pass) {
+    var findUser = users.singleWhere(
+        (element) => element.name == user && element.password == pass);
+    if (findUser == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void dispose() {
+    _user.close();
+    _pass.close();
+  }
+}
+
+class SignUpBloc {
+  StreamController _user = new StreamController();
+  StreamController _pass = new StreamController();
+  StreamController _address = new StreamController();
+  StreamController _email = new StreamController();
+  StreamController _confirm = new StreamController();
+
+  Stream get userStream => _user.stream;
+  Stream get passStream => _pass.stream;
+  Stream get addressStream => _address.stream;
+  Stream get emailStream => _email.stream;
+  Stream get confirmStream => _confirm.stream;
+
+  bool isValid(
+      String user, String pass, String address, String email, String confirm) {
+    if (Validation.isAddress(address)) {
+      _address.sink.addError("Address is empty or invalid!");
+      return false;
+    }
+    _address.sink.add("OK");
+    if (Validation.isEmail(email)) {
+      _email.sink.addError("Email invalid!");
+      return false;
+    }
+    _email.sink.add("OK");
+    if (Validation.isValidUser(user)) {
+      _user.sink.addError("Account invalid!");
+      return false;
+    }
+    _user.sink.add("OK");
+    if (Validation.isValidPass(pass)) {
+      _pass.sink.addError("Password invalid!");
+      return false;
+    }
+    _pass.sink.add("OK");
+    if (Validation.isConfirmPassword(pass, confirm)) {
+      _confirm.sink.addError("Confirm password incorrect!");
+      return false;
+    }
+    _confirm.sink.add("OK");
+    return true;
+  }
+
+  void dispose() {
+    _address.close();
+    _email.close();
+    _pass.close();
+    _user.close();
+    _confirm.close();
+  }
+}
+
+class Validation {
+  static bool isAddress(String address) {
+    return address.isEmpty || address.length < 10;
+  }
+
+  static bool isConfirmPassword(String pass, String confirm) {
+    return pass != confirm;
+  }
+
+  static bool isEmail(String email) {
+    return email.isEmpty || email.length < 6 || !email.contains("@");
+  }
+
+  static bool isValidUser(String user) {
+    return user.isEmpty || user.length < 6;
+  }
+
+  static bool isValidPass(String pass) {
+    return pass.isEmpty || pass.length < 6;
+  }
 }

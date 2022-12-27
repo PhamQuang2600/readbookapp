@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/loading/loading.dart';
+import 'package:readbookapp/src/resouces/profile.dart';
 import 'package:readbookapp/src/resouces/read_book_page.dart';
 import 'package:readbookapp/src/resouces/search_books.dart';
+import 'package:readbookapp/src/resouces/sign_in.dart';
 
 import '../../data/data_test.dart';
 
@@ -86,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                   () {
                     LoadingDiaLog.hideDiaLog(context);
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const HomePage()));
+                        MaterialPageRoute(builder: (_) => const ProfilePage()));
                   },
                 );
               },
@@ -117,8 +119,11 @@ class _HomePageState extends State<HomePage> {
                             const Duration(seconds: 2),
                             () {
                               LoadingDiaLog.hideDiaLog(context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const HomePage()));
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (_) => const SignInPage()),
+                                (Route<dynamic> route) => false,
+                              );
                             },
                           );
                         },
@@ -133,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return FadeAnimation(1, alert);
+                    return FadeAnimation(.6, alert);
                   },
                 );
               },
@@ -202,10 +207,10 @@ class _HomePageState extends State<HomePage> {
                       FadeAnimation(
                           1,
                           Text(
-                            'Category  Book',
+                            'Category Book',
                             style: TextStyle(
                                 color: Colors.grey[80],
-                                fontSize: 30,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           )),
                       const SizedBox(

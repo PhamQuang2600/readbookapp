@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/data/data_test.dart';
+import 'package:readbookapp/src/resouces/profile.dart';
+import 'package:readbookapp/src/resouces/sign_in.dart';
 
 import '../../loading/loading.dart';
 import 'home_page.dart';
@@ -94,8 +96,8 @@ class _ReadBookPageState extends State<ReadBookPage> {
                     const Duration(seconds: 2),
                     () {
                       LoadingDiaLog.hideDiaLog(context);
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const HomePage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const ProfilePage()));
                     },
                   );
                 },
@@ -126,8 +128,11 @@ class _ReadBookPageState extends State<ReadBookPage> {
                               const Duration(seconds: 2),
                               () {
                                 LoadingDiaLog.hideDiaLog(context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => const HomePage()));
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (_) => const SignInPage()),
+                                  (Route<dynamic> route) => false,
+                                );
                               },
                             );
                           },
@@ -142,7 +147,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return FadeAnimation(1, alert);
+                      return FadeAnimation(.6, alert);
                     },
                   );
                 },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:readbookapp/src/resouces/home_page.dart';
+import 'package:readbookapp/src/resouces/start_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -9,7 +9,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Roboto'),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const StartPage(),
     );
   }
 }
