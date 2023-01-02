@@ -365,6 +365,26 @@ class _SearchBooksPageState extends State<SearchBooksPage> {
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     child: TextField(
+                      onSubmitted: (value) {
+                        if (value.isEmpty) {
+                          
+                        } else {
+                          Future.delayed(
+                            Duration.zero,
+                            () {
+                              LoadingDiaLog.showLoadingDiaLog(context);
+                            },
+                          );
+                          Future.delayed(
+                            const Duration(seconds: 2),
+                            () {
+                              LoadingDiaLog.hideDiaLog(context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => SearchBooksPage(value)));
+                            },
+                          );
+                        }
+                      },
                       textInputAction: TextInputAction.search,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -487,9 +507,14 @@ class _SearchBooksPageState extends State<SearchBooksPage> {
                           const Duration(seconds: 2),
                           () {
                             LoadingDiaLog.hideDiaLog(context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ReadBookPage(books.id),
-                            ));
+                            LoadingDataBook.showLoadingDataBook(context);
+                            Future.delayed(
+                                const Duration(seconds: 3),
+                                () => Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ReadBookPage(books.id),
+                                    )));
                           },
                         );
                       },

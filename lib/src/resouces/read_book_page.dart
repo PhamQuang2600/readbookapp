@@ -197,10 +197,14 @@ class _ReadBookPageState extends State<ReadBookPage> {
                               const Duration(seconds: 2),
                               () {
                                 LoadingDiaLog.hideDiaLog(context);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      ReadBookPage(bookRelate![index].id),
-                                ));
+                                LoadingDataBook.showLoadingDataBook(context);
+                            Future.delayed(
+                                const Duration(seconds: 3),
+                                () => Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ReadBookPage(bookRelate![index].id),
+                                    )));
                               },
                             );
                           },

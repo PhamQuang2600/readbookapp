@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                 child: TextField(
                   onSubmitted: (value) {
                     if (value.isEmpty) {
-                      Navigator.of(context).pop();
+                      
                     } else {
                       Future.delayed(
                         Duration.zero,
@@ -266,10 +266,14 @@ class _HomePageState extends State<HomePage> {
                                 const Duration(seconds: 2),
                                 () {
                                   LoadingDiaLog.hideDiaLog(context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReadBookPage(books[index].id),
-                                  ));
+                                  LoadingDataBook.showLoadingDataBook(context);
+                                  Future.delayed(
+                                      const Duration(seconds: 3),
+                                      () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReadBookPage(books[index].id),
+                                          )));
                                 },
                               );
                             },
@@ -312,10 +316,14 @@ class _HomePageState extends State<HomePage> {
                                 const Duration(seconds: 2),
                                 () {
                                   LoadingDiaLog.hideDiaLog(context);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReadBookPage(books[index].id),
-                                  ));
+                                  LoadingDataBook.showLoadingDataBook(context);
+                                  Future.delayed(
+                                      const Duration(seconds: 3),
+                                      () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReadBookPage(books[index].id),
+                                          )));
                                 },
                               );
                             },
@@ -570,9 +578,14 @@ class _HomePageState extends State<HomePage> {
                           const Duration(seconds: 2),
                           () {
                             LoadingDiaLog.hideDiaLog(context);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ReadBookPage(books.id),
-                            ));
+                            LoadingDataBook.showLoadingDataBook(context);
+                            Future.delayed(
+                                const Duration(seconds: 3),
+                                () => Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ReadBookPage(books.id),
+                                    )));
                           },
                         );
                       },

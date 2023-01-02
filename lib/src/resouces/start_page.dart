@@ -97,10 +97,17 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
                                     const Duration(seconds: 2),
                                     () {
                                       LoadingDiaLog.hideDiaLog(context);
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => const HomePage(),
-                                      ));
+                                      LoadingDataHome.showLoadingData(context);
+                                      Future.delayed(
+                                        const Duration(seconds: 3),
+                                        () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomePage(),
+                                          ));
+                                        },
+                                      );
                                     },
                                   );
                                 },
