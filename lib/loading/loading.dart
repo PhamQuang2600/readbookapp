@@ -178,6 +178,24 @@ class LoadingDataHome {
   }
 }
 
+class MsgDiaLog {
+  static void showMessDiaLog(BuildContext context, String title, String msg) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(msg),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(MsgDiaLog),
+            child: const Text("OK"),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class LoadingDataBook {
   static void showLoadingDataBook(BuildContext context) {
     showDialog(
@@ -212,12 +230,12 @@ class LoadingDataBook {
                       width: MediaQuery.of(context).size.width,
                       child: ListView.builder(
                           itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Container(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Container(
                                   color: Colors.white,
                                   height: 30,
                                 ),
-                          )),
+                              )),
                     ),
                     const SizedBox(
                       height: 10,

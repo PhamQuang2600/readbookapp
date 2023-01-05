@@ -106,14 +106,13 @@ class SignInBloc {
     return true;
   }
 
-  bool signIn(String user, String pass) {
-    var findUser = users.singleWhere(
-        (element) => element.name == user && element.password == pass);
-    // ignore: unnecessary_null_comparison
-    if (findUser == null) {
-      return false;
-    } else {
-      return true;
+   signIn(String userName, String pass) {
+    for (var user in users) {
+      if (userName != user.name && pass != user.password) {
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
