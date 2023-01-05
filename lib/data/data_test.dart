@@ -86,8 +86,8 @@ class Books {
 }
 
 class SignInBloc {
-  StreamController _user = StreamController();
-  StreamController _pass = StreamController();
+  final StreamController _user = StreamController();
+  final StreamController _pass = StreamController();
 
   Stream get userStream => _user.stream;
   Stream get passStream => _pass.stream;
@@ -109,7 +109,8 @@ class SignInBloc {
   bool signIn(String user, String pass) {
     var findUser = users.singleWhere(
         (element) => element.name == user && element.password == pass);
-    if (findUser == 0) {
+    // ignore: unnecessary_null_comparison
+    if (findUser == null) {
       return false;
     } else {
       return true;
@@ -123,11 +124,11 @@ class SignInBloc {
 }
 
 class SignUpBloc {
-  StreamController _user = new StreamController();
-  StreamController _pass = new StreamController();
-  StreamController _address = new StreamController();
-  StreamController _email = new StreamController();
-  StreamController _confirm = new StreamController();
+  final StreamController _user = StreamController();
+  final StreamController _pass = StreamController();
+  final StreamController _address = StreamController();
+  final StreamController _email = StreamController();
+  final StreamController _confirm = StreamController();
 
   Stream get userStream => _user.stream;
   Stream get passStream => _pass.stream;

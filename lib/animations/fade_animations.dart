@@ -9,9 +9,9 @@ class FadeAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeInRight(
-      child: child,
       delay: Duration(milliseconds: (500 * delay).round()),
       duration: const Duration(milliseconds: 500),
+      child: child,
     );
   }
 }
