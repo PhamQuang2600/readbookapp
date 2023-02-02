@@ -1,16 +1,12 @@
-# readbookapp
+# Readbookapp
 
-A new Flutter project.
+App về đọc sách online.
 
-## Getting Started
+Chức năng: đăng nhập, đăng kí, tìm kiếm, xem thông tin cá nhân, đọc sách.
 
-This project is a starting point for a Flutter application.
+## Demo
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://user-images.githubusercontent.com/100197752/216367178-cf678acf-ce95-4df0-b3de-4e68f10f5805.mp4
+
