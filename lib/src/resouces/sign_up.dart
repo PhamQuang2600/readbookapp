@@ -116,7 +116,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                   isShowPass = !isShowPass;
                                 });
                               },
-                              child: const Icon(Icons.remove_red_eye)),
+                              child: isShowPass
+                                  ? const Icon(Icons.remove_red_eye)
+                                  : const Icon(Icons.visibility_off)),
                           hintText: 'Password',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -142,7 +144,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                   isShowPass = !isShowPass;
                                 });
                               },
-                              child: const Icon(Icons.remove_red_eye)),
+                              child: isShowPass
+                                  ? const Icon(Icons.remove_red_eye)
+                                  : const Icon(Icons.visibility_off)),
                           hintText: 'Confirm Password',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),

@@ -160,7 +160,6 @@ class _HomePageState extends State<HomePage> {
                 child: TextField(
                   onSubmitted: (value) {
                     if (value.isEmpty) {
-                      
                     } else {
                       Future.delayed(
                         Duration.zero,
@@ -196,48 +195,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      FadeAnimation(
-                          1,
-                          Text(
-                            'Category Book',
-                            style: TextStyle(
-                                color: Colors.grey[80],
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          )),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ListView.builder(
-                            itemCount: category.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: 160,
-                                child: ListTile(
-                                  contentPadding: const EdgeInsets.all(1),
-                                  title: FadeAnimation(1,
-                                      makeCategory(category: category[index])),
-                                ),
-                              );
-                            },
-                          )),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ]),
-              ),
               FadeAnimation(
                   1,
                   Padding(
@@ -365,32 +322,6 @@ class _HomePageState extends State<HomePage> {
                         )),
               )
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget makeCategory({category}) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          category['isActive'] = !category['isActive'];
-        });
-      },
-      child: Container(
-        margin: const EdgeInsets.only(right: 10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            color: category['isActive'] ? Colors.yellow[700] : Colors.white),
-        child: Align(
-          child: Text(
-            category['name'],
-            style: TextStyle(
-                fontSize: 18,
-                color: category['isActive'] ? Colors.white : Colors.grey[500],
-                fontWeight:
-                    category['isActive'] ? FontWeight.bold : FontWeight.w300),
           ),
         ),
       ),

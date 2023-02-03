@@ -93,8 +93,8 @@ class SignInBloc {
   Stream get passStream => _pass.stream;
 
   bool isValid(String user, String pass) {
-    if (Validation.isValidUser(user)) {
-      _user.sink.addError("Account invalid!");
+    if (Validation.isValidUserSignIn(user)) {
+      _user.sink.addError("Account empty!");
       return false;
     }
     _user.sink.add("OK");
@@ -106,7 +106,7 @@ class SignInBloc {
     return true;
   }
 
-   signIn(String userName, String pass) {
+  signIn(String userName, String pass) {
     for (var user in users) {
       if (userName != user.name && pass != user.password) {
         return false;
@@ -148,7 +148,7 @@ class SignUpBloc {
     }
     _email.sink.add("OK");
     if (Validation.isValidUser(user)) {
-      _user.sink.addError("Account invalid!");
+      _user.sink.addError("Account empty or exists!");
       return false;
     }
     _user.sink.add("OK");
@@ -187,8 +187,17 @@ class Validation {
     return email.isEmpty || email.length < 6 || !email.contains("@");
   }
 
-  static bool isValidUser(String user) {
-    return user.isEmpty || user.length < 6;
+  static bool isValidUser(String userName) {
+    for (var user in users) {
+      if (user.name == userName) {
+        return true;
+      }
+    }
+    return userName.isEmpty || userName.length < 6;
+  }
+
+  static bool isValidUserSignIn(String userName) {
+    return userName.isEmpty || userName.length < 6;
   }
 
   static bool isValidPass(String pass) {
