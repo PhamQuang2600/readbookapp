@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readbookapp/src/resouces/profile.dart';
 import 'package:readbookapp/src/resouces/start_page.dart';
 
 class App extends StatelessWidget {
@@ -9,7 +10,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Roboto'),
       debugShowCheckedModeBanner: false,
-      home: const StartPage(),
+      home: ProfilePage(),
     );
   }
 }

@@ -159,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                       );
                     },
                     child: const Text(
-                      'Sign up now!',
+                      'Sign up now',
                       style: TextStyle(fontSize: 16, color: Colors.blue),
                     ),
                   )

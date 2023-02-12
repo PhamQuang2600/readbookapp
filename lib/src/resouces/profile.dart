@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
+import 'package:readbookapp/src/resouces/editprofile_page.dart';
+import 'package:readbookapp/src/resouces/sign_in.dart';
+
+import '../../loading/loading.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -92,6 +96,90 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FadeAnimation(
+                      .9,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: MaterialButton(
+                          color: Colors.black,
+                          onPressed: () {
+                            LoadingDiaLog.showLoadingDiaLog(context);
+                            Future.delayed(
+                              Duration(seconds: 2),
+                              () {
+                                LoadingDiaLog.hideDiaLog(context);
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (_) => EditProfilePage()));
+                              },
+                            );
+                          },
+                          child: Text(
+                            'Edit',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      )),
+                  FadeAnimation(
+                      .9,
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: MaterialButton(
+                          color: Colors.black,
+                          onPressed: () {
+                            AlertDialog alert = AlertDialog(
+                              title: const Text('Book'),
+                              content: const Text('Do you want leave?'),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Future.delayed(
+                                        Duration.zero,
+                                        () {
+                                          LoadingDiaLog.showLoadingDiaLog(
+                                              context);
+                                        },
+                                      );
+                                      Future.delayed(
+                                        const Duration(seconds: 2),
+                                        () {
+                                          LoadingDiaLog.hideDiaLog(context);
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const SignInPage()),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text('OK')),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('No'))
+                              ],
+                            );
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return FadeAnimation(.6, alert);
+                              },
+                            );
+                          },
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      ))
+                ],
               )
             ]),
       ),

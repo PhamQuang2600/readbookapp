@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/loading/loading.dart';
-import 'package:readbookapp/src/resouces/profile.dart';
-import 'package:readbookapp/src/resouces/read_book_page.dart';
+import 'package:readbookapp/src/resouces/drawer_page.dart';
+import 'package:readbookapp/src/resouces/about_book_page.dart';
 import 'package:readbookapp/src/resouces/search_books.dart';
-import 'package:readbookapp/src/resouces/sign_in.dart';
 
 import '../../data/data_test.dart';
 
@@ -19,137 +18,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.topRight,
-                      colors: <Color>[Colors.red, Colors.blue])),
-              child: SizedBox(
-                width: double.infinity,
-                height: 200.0,
-                child: Center(
-                  child: Column(
-                    children: const <Widget>[
-                      CircleAvatar(
-                        radius: 40.0,
-                        child: Icon(Icons.person, size: 50),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home, size: 30),
-              title: const Text(
-                'Home',
-                style: TextStyle(fontSize: 20),
-              ),
-              onTap: () {
-                Future.delayed(
-                  Duration.zero,
-                  () {
-                    LoadingDiaLog.showLoadingDiaLog(context);
-                  },
-                );
-                Future.delayed(
-                  const Duration(seconds: 2),
-                  () {
-                    LoadingDiaLog.hideDiaLog(context);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const HomePage()));
-                  },
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.person,
-                size: 30,
-              ),
-              title: const Text(
-                'Profile',
-                style: TextStyle(fontSize: 20),
-              ),
-              onTap: () {
-                Future.delayed(
-                  Duration.zero,
-                  () {
-                    LoadingDiaLog.showLoadingDiaLog(context);
-                  },
-                );
-                Future.delayed(
-                  const Duration(seconds: 2),
-                  () {
-                    LoadingDiaLog.hideDiaLog(context);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const ProfilePage()));
-                  },
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.logout,
-                size: 30,
-              ),
-              title: const Text(
-                'Logout',
-                style: TextStyle(fontSize: 20),
-              ),
-              onTap: () {
-                AlertDialog alert = AlertDialog(
-                  title: const Text('Book'),
-                  content: const Text('Do you want leave?'),
-                  actions: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Future.delayed(
-                            Duration.zero,
-                            () {
-                              LoadingDiaLog.showLoadingDiaLog(context);
-                            },
-                          );
-                          Future.delayed(
-                            const Duration(seconds: 2),
-                            () {
-                              LoadingDiaLog.hideDiaLog(context);
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (_) => const SignInPage()),
-                                (Route<dynamic> route) => false,
-                              );
-                            },
-                          );
-                        },
-                        child: const Text('OK')),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('No'))
-                  ],
-                );
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return FadeAnimation(.6, alert);
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerPage(),
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         elevation: 0,
+        leading: Builder(
+          builder: (context) => GestureDetector(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: Icon(Icons.menu, color: Colors.black),
+          ),
+        ),
         actions: [
           FadeAnimation(
             .9,
@@ -229,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                                       () => Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) =>
-                                                ReadBookPage(books[index].id),
+                                                AboutBookPage(books[index].id),
                                           )));
                                 },
                               );
@@ -279,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                                       () => Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) =>
-                                                ReadBookPage(books[index].id),
+                                                AboutBookPage(books[index].id),
                                           )));
                                 },
                               );
@@ -515,7 +396,7 @@ class _HomePageState extends State<HomePage> {
                                 () => Navigator.of(context)
                                         .push(MaterialPageRoute(
                                       builder: (context) =>
-                                          ReadBookPage(books.id),
+                                          AboutBookPage(books.id),
                                     )));
                           },
                         );
