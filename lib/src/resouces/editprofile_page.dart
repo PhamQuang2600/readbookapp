@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:readbookapp/data/data_test.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -9,6 +10,13 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _onImageButtonPressed(ImageSource source,
+      {BuildContext? context}) async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,17 +27,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: EdgeInsets.only(bottom: 10),
-              height: 200,
-              width: 200,
-              child: CircleAvatar(
-                  child: getUser(1).image == null
-                      ? Icon(
-                          Icons.person,
-                          size: 100,
-                        )
-                      : Image.asset('assets_image/${getUser(1).image}')),
+            Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 10),
+                  height: 200,
+                  width: 200,
+                  child: CircleAvatar(
+                      child: getUser(1).image.isEmpty
+                          ? Icon(
+                              Icons.person,
+                              size: 100,
+                            )
+                          : Image.asset('assets_image/${getUser(1).image}')),
+                ),
+                Positioned(
+                  top: 110,
+                  left: 160,
+                  right: 0,
+                  bottom: 50,
+                  child: GestureDetector(
+                    onTap: () {
+                      _onImageButtonPressed(ImageSource.gallery, context: context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
