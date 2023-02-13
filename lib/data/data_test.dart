@@ -7838,7 +7838,7 @@ var books = [
       "MY GENES CAN EVOLVE LIMITLESSLY",
       '''\tThis is a world where technology and the supernatural exist. There are demonic beasts, wars between species, evolution, and danger everywhere. Fortunately, humans aged between 16 to 18 will have the chance to activate certain genes and become gene warriors. Gene warriors will enter a wonderous World of Origination and begin their adventure there. They will seek treasure and copy extraordinary genes to gain wondrous strength, becoming the main power against danger. Lu Yuan transmigrated to this world, bringing with him a cube that can evolve genes without limits. I woke up with a start. I have transmigrated, am handsome, and have the golden touch. I am going to win at this! Am I going to be the protagonist?! I, Lu Yuan, am definitely going to become the pillar of the human race!''',
       " Rainy Blue Skies",
-      ["Fantasy", " Eastern"],
+      ["Fantasy", "Eastern"],
       "assets_image/my-genes-can-evolve-limitlessly.jpg",
       false,
       false),
@@ -7847,7 +7847,7 @@ var books = [
       "The Gravity of Us",
       "\tAs a successful social media journalist with half a million followers, seventeen-year-old Cal is used to sharing his life online. But when his pilot father is selected for a highly publicized NASA mission to Mars, Cal and his family relocate from Brooklyn to Houston and are thrust into a media circus.Amidst the chaos, Cal meets sensitive and mysterious Leon, another “Astrokid,” and finds himself falling head over heels—fast. As the frenzy around the mission grows, so does their connection. But when secrets about the program are uncovered, Cal must find a way to reveal the truth without hurting the people who have become most important to him.Expertly capturing the thrill of first love and the self-doubt all teens feel, debut author Phil Stamper is a new talent to watch.",
       "Phil Stamper",
-      ["JUVENILE FICTION", " General", "Young Adult Fiction", "LGBTQ"],
+      ["JUVENILE FICTION", "General", "Young Adult Fiction", "LGBTQ"],
       "assets_image/three.jpg",
       false,
       false),
@@ -7863,7 +7863,7 @@ var books = [
 ];
 
 List<Users> users = [
-  Users(1, "PhamQuang", "phamquang", "quangpham2kst.gmail.com",
+  Users(1, "PhamQuang", "PhamQuang", "phamquang", "quangpham2kst.gmail.com",
       "Phan Dinh Giot - Phuong Liet - Thanh Xuan - Ha Noi", "")
 ];
 
@@ -7883,6 +7883,24 @@ Books bookDetail(int id) {
 
 List<Books> bookRelated(int id) {
   return books.where((element) => element.id != id).toList();
+}
+
+List<Books> categoryBooks(String name) {
+  return books.where((e) => e.genre.contains(name)).toList();
+}
+
+var categories = [
+  Category(1, 'Romance'),
+  Category(2, 'JUVENILE FICTION'),
+  Category(3, 'General'),
+  Category(4, 'Fantasy'),
+  Category(5, 'Eastern'),
+];
+
+class Category {
+  int id;
+  String name;
+  Category(this.id, this.name);
 }
 
 class ChapterBook {
@@ -7910,15 +7928,26 @@ Users getUser(int id) {
   return users.singleWhere((element) => element.id == id);
 }
 
+List<Books> favoriteBook() {
+  List<Books> favorite = [];
+  for (var book in books) {
+    if (book.favorite == true) {
+      favorite.add(book);
+    }
+  }
+  return favorite;
+}
+
 class Users {
   int id;
+  String account;
   String name;
   String password;
   String email;
   String address;
   String image;
-  Users(
-      this.id, this.name, this.password, this.email, this.address, this.image);
+  Users(this.id, this.account, this.name, this.password, this.email,
+      this.address, this.image);
 }
 
 class Books {
@@ -7971,21 +8000,61 @@ class SignInBloc {
   }
 }
 
+class EditProfileBloc {
+  final StreamController _name = StreamController();
+  final StreamController _email = StreamController();
+  final StreamController _address = StreamController();
+  final StreamController _image = StreamController();
+
+  Stream get name => _name.stream;
+  Stream get email => _email.stream;
+  Stream get address => _address.stream;
+  Stream get image => _image.stream;
+
+  bool isEdited(
+      int id, String name, String email, String address, String image) {
+    if (!name.isEmpty || !email.isEmpty || !address.isEmpty || !image.isEmpty) {
+      _name.sink.add('OK');
+      _email.sink.add('OK');
+      _address.sink.add('OK');
+      _image.sink.add('OK');
+
+      Users user = users.elementAt(id);
+      user.name = name;
+      user.email = email;
+      user.address = address;
+      user.image = image;
+      return true;
+    } else {
+      return true;
+    }
+  }
+
+  void dispose() {
+    _name.close();
+    _email.close();
+    _address.close();
+    _image.close();
+  }
+}
+
 class SignUpBloc {
   final StreamController _user = StreamController();
+  final StreamController _name = StreamController();
   final StreamController _pass = StreamController();
   final StreamController _address = StreamController();
   final StreamController _email = StreamController();
   final StreamController _confirm = StreamController();
 
   Stream get userStream => _user.stream;
+  Stream get nameStream => _name.stream;
   Stream get passStream => _pass.stream;
   Stream get addressStream => _address.stream;
   Stream get emailStream => _email.stream;
   Stream get confirmStream => _confirm.stream;
 
-  bool isValid(
-      String user, String pass, String address, String email, String confirm) {
+  bool isValid(String user, String name, String pass, String address,
+      String email, String confirm) {
     if (Validation.isAddress(address)) {
       _address.sink.addError("Address is empty or invalid!");
       return false;
@@ -8001,6 +8070,11 @@ class SignUpBloc {
       return false;
     }
     _user.sink.add("OK");
+    if (Validation.isValidUser(name)) {
+      _name.sink.addError("Account empty or exists!");
+      return false;
+    }
+    _user.sink.add("OK");
     if (Validation.isValidPass(pass)) {
       _pass.sink.addError("Password invalid!");
       return false;
@@ -8012,7 +8086,7 @@ class SignUpBloc {
     }
     _confirm.sink.add("OK");
 
-    users.add(Users(users.length + 1, user, pass, email, address, ''));
+    users.add(Users(users.length + 1, user, name, pass, email, address, ''));
     return true;
   }
 

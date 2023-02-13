@@ -61,7 +61,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (_) => ReadBookPage(
-                                          widget.nameBook, index)));
+                                          widget.nameBook, index+1)));
                             },
                           );
                         },

@@ -16,6 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
   SignUpBloc bloc = SignUpBloc();
   bool isShowPass = true;
   TextEditingController user = TextEditingController();
+  TextEditingController name = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -56,6 +57,24 @@ class _SignUpPageState extends State<SignUpPage> {
                               : null,
                           prefixIcon: const Icon(Icons.person),
                           hintText: 'Account',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                    );
+                  }),
+              const SizedBox(
+                height: 20,
+              ),
+              StreamBuilder(
+                  stream: bloc.nameStream,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      controller: name,
+                      decoration: InputDecoration(
+                          errorText: snapshot.hasError
+                              ? snapshot.error.toString()
+                              : null,
+                          prefixIcon: const Icon(Icons.person),
+                          hintText: 'Name',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
                     );
@@ -161,8 +180,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                       onPressed: () {
-                        if (bloc.isValid(user.text, password.text, address.text,
-                            email.text, confirmPassword.text)) {
+                        if (bloc.isValid(user.text, name.text, password.text,
+                            address.text, email.text, confirmPassword.text)) {
                           LoadingDiaLog.showLoadingDiaLog(context);
                           AlertDialog alert = AlertDialog(
                             content:
