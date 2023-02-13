@@ -80,7 +80,9 @@ class _SignInPageState extends State<SignInPage> {
                                   isShowPass = !isShowPass;
                                 });
                               },
-                              child: const Icon(Icons.remove_red_eye)),
+                              child: isShowPass
+                                  ? const Icon(Icons.remove_red_eye)
+                                  : const Icon(Icons.visibility_off)),
                           hintText: 'Password',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -157,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                       );
                     },
                     child: const Text(
-                      'Sign up now!',
+                      'Sign up now',
                       style: TextStyle(fontSize: 16, color: Colors.blue),
                     ),
                   )
