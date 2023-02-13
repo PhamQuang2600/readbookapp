@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/loading/loading.dart';
+import 'package:readbookapp/src/resouces/sign_in.dart';
 
 import 'home_page.dart';
 
@@ -97,17 +98,12 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
                                     const Duration(seconds: 2),
                                     () {
                                       LoadingDiaLog.hideDiaLog(context);
-                                      LoadingDataHome.showLoadingData(context);
-                                      Future.delayed(
-                                        const Duration(seconds: 3),
-                                        () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomePage(),
-                                          ));
-                                        },
-                                      );
+
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignInPage(),
+                                      ));
                                     },
                                   );
                                 },

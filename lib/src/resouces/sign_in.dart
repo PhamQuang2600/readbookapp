@@ -80,7 +80,9 @@ class _SignInPageState extends State<SignInPage> {
                                   isShowPass = !isShowPass;
                                 });
                               },
-                              child: const Icon(Icons.remove_red_eye)),
+                              child: isShowPass
+                                  ? const Icon(Icons.remove_red_eye)
+                                  : const Icon(Icons.visibility_off)),
                           hintText: 'Password',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -96,43 +98,29 @@ class _SignInPageState extends State<SignInPage> {
                   child: ElevatedButton(
                       onPressed: () {
                         if (bloc.isValid(user.text, password.text)) {
-                          Future.delayed(
-                            Duration.zero,
-                            () {
-                              LoadingDiaLog.showLoadingDiaLog(context);
-                            },
-                          );
-                          (bloc.signIn(user.text, password.text));
-                          Future.delayed(
-                            const Duration(seconds: 2),
-                            () {
-                              LoadingDiaLog.hideDiaLog(context);
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (_) => const HomePage()),
-                                  (Route<dynamic> route) => false);
-                            },
-                          );
-                        } else {
-                          Future.delayed(
-                            const Duration(seconds: 2),
-                            () {
-                              LoadingDiaLog.hideDiaLog(context);
-                              AlertDialog alert = AlertDialog(
-                                content: const Text(
-                                    'Account or password incorrect!, please try again!'),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text('OK'))
-                                ],
-                              );
-                              showDialog(
-                                  context: context, builder: (_) => alert);
-                            },
-                          );
+                          LoadingDiaLog.showLoadingDiaLog(context);
+
+                          if (bloc.signIn(user.text, password.text)) {
+                            Future.delayed(
+                              const Duration(seconds: 2),
+                              () {
+                                LoadingDiaLog.hideDiaLog(context);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (_) => const HomePage()),
+                                    (Route<dynamic> route) => false);
+                              },
+                            );
+                          } else {
+                            Future.delayed(
+                              const Duration(seconds: 2),
+                              () {
+                                LoadingDiaLog.hideDiaLog(context);
+                                MsgDiaLog.showMessDiaLog(context, "SignIn",
+                                    "Account or password incorrect. Please try again");
+                              },
+                            );
+                          }
                         }
                       },
                       child: const Text(
@@ -171,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                       );
                     },
                     child: const Text(
-                      'Sign up now!',
+                      'Sign up now',
                       style: TextStyle(fontSize: 16, color: Colors.blue),
                     ),
                   )
