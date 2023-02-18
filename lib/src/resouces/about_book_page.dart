@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/data/data_test.dart';
 import 'package:readbookapp/src/resouces/drawer_page.dart';
-import 'package:readbookapp/src/resouces/read_book_page_page.dart';
+import 'package:readbookapp/src/resouces/read_book_page.dart';
 
 import '../../loading/loading.dart';
 
@@ -132,7 +132,8 @@ class _AboutBookPageState extends State<AboutBookPage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => ReadBookPage(book!.name, 1)));
+                              builder: (_) =>
+                                  ReadBookPage(book!.name, 1)));
                     },
                   );
                 },

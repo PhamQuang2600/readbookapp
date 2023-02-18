@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "882422743791",
+    "project_id": "readbookapp-fc384",
+    "storage_bucket": "readbookapp-fc384.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882422743791:android:d42bd2996f8633ce49111a",
+        "android_client_info": {
+          "package_name": "com.example.readbookapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882422743791-nps1ofmses4c1q06laumbp18ofmue1ju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.readbookapp",
+            "certificate_hash": "14dc6c5c80d948fd177c63946560e2624d562339"
+          }
+        },
+        {
+          "client_id": "882422743791-so5rv4no6ko858hi7joepjlithsaebr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaBRCZUUet3T4ZejcLdp3wRoDe21rRzOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882422743791-so5rv4no6ko858hi7joepjlithsaebr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

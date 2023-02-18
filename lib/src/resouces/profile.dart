@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/src/resouces/editprofile_page.dart';
@@ -13,6 +14,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +53,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: BoxDecoration(
                         border: Border.all(width: 1),
                         borderRadius: BorderRadius.circular(10)),
-                    child: const Text(
-                      'Pham Quang',
+                    child: Text(
+                      user.displayName.toString(),
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -70,8 +72,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: BoxDecoration(
                         border: Border.all(width: 1),
                         borderRadius: BorderRadius.circular(10)),
-                    child: const Text(
-                      'quangpham2kst@gmail.com',
+                    child: Text(
+                      user.email.toString(),
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -89,8 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: BoxDecoration(
                         border: Border.all(width: 1),
                         borderRadius: BorderRadius.circular(10)),
-                    child: const Text(
-                      'Phan Dinh Giot - Thanh Xuan - Ha Noi',
+                    child:  Text(
+                      user.uid,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -173,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Logout',
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
