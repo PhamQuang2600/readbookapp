@@ -1,9 +1,15 @@
-class Category {
-  String id;
-  String name;
-  Category(this.id, this.name);
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(json['id'], json['name']);
+class Category extends Equatable {
+  final String id;
+  final String name;
+  const Category(this.id, this.name);
+
+  factory Category.fromJson(DocumentSnapshot json) {
+    return Category(json.id, json['name']);
   }
+
+  @override
+  List<Object?> get props => [id, name];
 }

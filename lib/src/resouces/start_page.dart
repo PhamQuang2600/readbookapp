@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
 import 'package:readbookapp/loading/loading.dart';
-import 'package:readbookapp/src/resouces/sign_in.dart';
 
 import 'home_page.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
+
+  static const String routeName = '/start-page';
+  static Route route() {
+    return MaterialPageRoute(
+        settings: const RouteSettings(name: routeName),
+        builder: (_) => const StartPage());
+  }
 
   @override
   State<StartPage> createState() => _StartPageState();
@@ -101,8 +107,7 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
 
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignInPage(),
+                                        builder: (context) => const HomePage(),
                                       ));
                                     },
                                   );

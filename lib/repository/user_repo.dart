@@ -7,49 +7,41 @@ import '../models/user.dart';
 
 class UserRepository {
   var currentUser;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  final _firebase = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firebase;
 
-  Future<void> registerUser(SignUp user) async {
-    try {
-      await users.add(user.toJson());
-    } catch (_) {}
+  UserRepository({FirebaseFirestore? firebaseFirestore})
+      : _firebase = firebaseFirestore ?? FirebaseFirestore.instance;
+
+  registerUser(Users user) {
+    _firebase
+        .collection('users')
+        .add(user.toJson())
+        .whenComplete(() => currentUser = user);
+
+    return currentUser;
   }
 
-  Future<void> signIn(String account, String password) async {
-    try {
-      await _firebase.signInWithEmailAndPassword(
-          email: account, password: password);
-    } catch (_) {}
+  Stream<List<Users>> getUser() {
+    return _firebase.collection('users').snapshots().map((snap) {
+      return snap.docs.map((e) => Users.fromJson(e)).toList();
+    });
   }
 
-  Future<void> signOut() async {
-    try {
-      await Future.wait([_firebase.signOut()]);
-    } catch (_) {}
+  updateUser(Users user) {
+    _firebase.collection('users').doc(_auth.currentUser!.uid).update({
+      'address': user.address,
+      'name': user.name,
+      'image': user.image,
+      'password': user.password
+    }).whenComplete(() => currentUser = user);
+
+    return currentUser;
   }
 
-  Future<Users> updateUser(Users user) async {
-    try {
-      var updateUser = await users.doc(user.id).update({
-        'address': user.address,
-        'name': user.name,
-        'image': user.image,
-        'password': user.password
-      });
-      return updateUser as Users;
-    } catch (_) {
-      return null as Users;
-    }
-  }
-
-  Future<Users> getById(String uid) async {
-    try {
-      currentUser = _firebase.currentUser!.uid;
-      Users user = await users.doc(currentUser).get() as Users;
-      return user;
-    } catch (_) {
-      return null as Users;
-    }
+  signOut() {
+    _auth.signOut();
+    currentUser = const Users(id: '');
+    return currentUser;
   }
 }

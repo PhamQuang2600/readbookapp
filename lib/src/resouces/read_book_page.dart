@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:readbookapp/animations/fade_animations.dart';
-import 'package:readbookapp/data/data_test.dart';
-import 'package:readbookapp/src/resouces/drawer_page.dart';
+import 'package:readbookapp/src/widget/drawer_page.dart';
 
 import '../../loading/loading.dart';
+import '../../models/book.dart';
 
 class ReadBookPage extends StatefulWidget {
-  String nameBook;
-  int id;
-  ReadBookPage(this.nameBook, this.id, {super.key});
+  final Books book;
+  final int idChapter;
+  const ReadBookPage({super.key, required this.book, required this.idChapter});
 
   @override
   State<ReadBookPage> createState() => _ReadBookPageState();
@@ -21,26 +21,26 @@ class _ReadBookPageState extends State<ReadBookPage> {
   @override
   void initState() {
     super.initState();
-    totalChapter = ListChapterBooks(widget.nameBook).length;
+    totalChapter = widget.book.chapter.length;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerPage(),
+      drawer: const DrawerPage(),
       endDrawer: Drawer(
           elevation: 0,
           child: Column(
             children: [
-              SizedBox(
-                height: 60,
+              const SizedBox(
+                height: 40,
               ),
               Container(
-                  padding: EdgeInsets.only(bottom: 30),
+                  padding: const EdgeInsets.only(left: 20),
                   alignment: Alignment.bottomCenter,
                   child: Text(
-                    'List Chapter',
-                    style: TextStyle(fontSize: 18),
+                    widget.book.name,
+                    style: const TextStyle(fontSize: 18),
                   )),
               Expanded(
                 child: ListView.builder(
@@ -55,23 +55,23 @@ class _ReadBookPageState extends State<ReadBookPage> {
                           });
                           LoadingDiaLog.showLoadingDiaLog(context);
                           Future.delayed(
-                            Duration(seconds: 2),
+                            const Duration(seconds: 2),
                             () {
                               LoadingDiaLog.hideDiaLog(context);
-                              Navigator.of(context).pushReplacement(
+                              Navigator.pushAndRemoveUntil(
+                                  context,
                                   MaterialPageRoute(
-                                      builder: (_) => ReadBookPage(
-                                          widget.nameBook, index+1)));
+                                    builder: (context) => ReadBookPage(
+                                        book: widget.book,
+                                        idChapter: widget.book.chapter[index]
+                                            ['id']),
+                                  ),
+                                  (route) => false);
                             },
                           );
                         },
-                        title: Container(
-                          child: Text('Chapter ' +
-                              (index + 1).toString() +
-                              ' ' +
-                              ListChapterBooks(widget.nameBook)[index]
-                                  .nameChapter),
-                        ),
+                        title: Text('Chapter ' '${(index + 1)}: ' +
+                            widget.book.chapter[index]['nameChapter']),
                       ),
                     );
                   },
@@ -80,11 +80,12 @@ class _ReadBookPageState extends State<ReadBookPage> {
             ],
           )),
       appBar: AppBar(
+        centerTitle: true,
         title: FadeAnimation(
           1.2,
           Text(
-            widget.nameBook,
-            style: TextStyle(color: Colors.black),
+            widget.book.name,
+            style: const TextStyle(color: Colors.black),
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -96,7 +97,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
               onTap: () {
                 Scaffold.of(context).openDrawer();
               },
-              child: Icon(
+              child: const Icon(
                 Icons.menu,
                 color: Colors.black,
               ),
@@ -117,33 +118,42 @@ class _ReadBookPageState extends State<ReadBookPage> {
           }),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+          child: Container(
+        child: buttonNextPage(widget.idChapter),
+      )),
       body: FadeAnimation(
         1.4,
         Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           height: double.infinity,
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
               children: [
+                widget.book.chapter[widget.idChapter - 1]['nameChapter'] == null
+                    ? Text(
+                        textAlign: TextAlign.center,
+                        'Chapter ' + widget.idChapter.toString(),
+                        style: const TextStyle(fontSize: 20),
+                      )
+                    : Text(
+                        textAlign: TextAlign.center,
+                        'Chapter ' +
+                            widget.idChapter.toString() +
+                            ': ' +
+                            widget.book.chapter[widget.idChapter - 1]
+                                ['nameChapter'],
+                        style: const TextStyle(fontSize: 20),
+                      ),
                 Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                   child: Text(
-                    'Chapter ' +
-                        ReadChapterBook(widget.nameBook, widget.id)
-                            .idChapter
-                            .toString() +
-                        ': ' +
-                        ReadChapterBook(widget.nameBook, widget.id).nameChapter,
-                    style: TextStyle(fontSize: 20),
+                    widget.book.chapter[widget.idChapter - 1]['detailChapter'],
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  child: Text(
-                    ReadChapterBook(widget.nameBook, widget.id).detailChapter,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                buttonNextPage(widget.id)
               ],
             ),
           ),
@@ -155,7 +165,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
   Widget buttonNextPage(int numberChapter) {
     if (numberChapter <= 1) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
@@ -164,15 +174,13 @@ class _ReadBookPageState extends State<ReadBookPage> {
               disabledColor: Colors.black26,
               color: Colors.black,
               minWidth: (MediaQuery.of(context).size.width / 2) - 12.5,
-              onPressed: () {
-                print(numberChapter);
-              },
-              child: Text(
+              onPressed: () {},
+              child: const Text(
                 'Previous',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             MaterialButton(
@@ -182,21 +190,22 @@ class _ReadBookPageState extends State<ReadBookPage> {
               onPressed: () {
                 LoadingDiaLog.showLoadingDiaLog(context);
                 Future.delayed(
-                  Duration(seconds: 2),
+                  const Duration(seconds: 2),
                   () {
                     LoadingDiaLog.showLoadingDiaLog(context);
                     Future.delayed(
-                      Duration(milliseconds: 800),
+                      const Duration(milliseconds: 800),
                       () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (_) =>
-                                ReadBookPage(widget.nameBook, widget.id + 1)));
+                            builder: (_) => ReadBookPage(
+                                book: widget.book,
+                                idChapter: widget.idChapter + 1)));
                       },
                     );
                   },
                 );
               },
-              child: Text(
+              child: const Text(
                 'Next',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
@@ -206,7 +215,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
       );
     } else if (numberChapter >= totalChapter) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
@@ -217,26 +226,27 @@ class _ReadBookPageState extends State<ReadBookPage> {
               onPressed: () {
                 LoadingDiaLog.showLoadingDiaLog(context);
                 Future.delayed(
-                  Duration(seconds: 2),
+                  const Duration(seconds: 2),
                   () {
                     LoadingDiaLog.showLoadingDiaLog(context);
                     Future.delayed(
-                      Duration(milliseconds: 800),
+                      const Duration(milliseconds: 800),
                       () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (_) =>
-                                ReadBookPage(widget.nameBook, widget.id - 1)));
+                            builder: (_) => ReadBookPage(
+                                book: widget.book,
+                                idChapter: widget.idChapter - 1)));
                       },
                     );
                   },
                 );
               },
-              child: Text(
+              child: const Text(
                 'Previous',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             MaterialButton(
@@ -245,7 +255,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
               color: Colors.black,
               minWidth: (MediaQuery.of(context).size.width / 2) - 12.5,
               onPressed: () {},
-              child: Text(
+              child: const Text(
                 'Next',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
@@ -255,7 +265,7 @@ class _ReadBookPageState extends State<ReadBookPage> {
       );
     } else if (numberChapter > 1 && numberChapter < totalChapter) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
@@ -266,26 +276,27 @@ class _ReadBookPageState extends State<ReadBookPage> {
               onPressed: () {
                 LoadingDiaLog.showLoadingDiaLog(context);
                 Future.delayed(
-                  Duration(seconds: 2),
+                  const Duration(seconds: 2),
                   () {
                     LoadingDiaLog.showLoadingDiaLog(context);
                     Future.delayed(
-                      Duration(milliseconds: 800),
+                      const Duration(milliseconds: 800),
                       () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (_) =>
-                                ReadBookPage(widget.nameBook, widget.id - 1)));
+                            builder: (_) => ReadBookPage(
+                                book: widget.book,
+                                idChapter: widget.idChapter - 1)));
                       },
                     );
                   },
                 );
               },
-              child: Text(
+              child: const Text(
                 'Previous',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             MaterialButton(
@@ -295,21 +306,22 @@ class _ReadBookPageState extends State<ReadBookPage> {
               onPressed: () {
                 LoadingDiaLog.showLoadingDiaLog(context);
                 Future.delayed(
-                  Duration(seconds: 2),
+                  const Duration(seconds: 2),
                   () {
                     LoadingDiaLog.showLoadingDiaLog(context);
                     Future.delayed(
-                      Duration(milliseconds: 800),
+                      const Duration(milliseconds: 800),
                       () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (_) =>
-                                ReadBookPage(widget.nameBook, widget.id + 1)));
+                            builder: (_) => ReadBookPage(
+                                book: widget.book,
+                                idChapter: widget.idChapter + 1)));
                       },
                     );
                   },
                 );
               },
-              child: Text(
+              child: const Text(
                 'Next',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),

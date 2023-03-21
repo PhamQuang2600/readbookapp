@@ -1,9 +1,15 @@
-class FavoriteBook {
-  String id;
-  String bookId;
-  String userId;
-  FavoriteBook(this.id, this.bookId, this.userId);
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-  factory FavoriteBook.fromJson(Map<String, dynamic> json) =>
-      FavoriteBook(json['id'], json['bookId'], json['userId']);
+class FavoriteBook extends Equatable {
+  final String id;
+  final String bookId;
+  final String userId;
+  const FavoriteBook(this.id, this.bookId, this.userId);
+
+  factory FavoriteBook.fromJson(DocumentSnapshot json) =>
+      FavoriteBook(json.id, json['bookId'], json['userId']);
+
+  @override
+  List<Object?> get props => [id, bookId, userId];
 }

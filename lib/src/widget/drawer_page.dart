@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:readbookapp/data/data_test.dart';
-import 'package:readbookapp/src/resouces/category_page.dart';
-import 'package:readbookapp/src/resouces/favorite_page.dart';
-import 'package:readbookapp/src/resouces/profile.dart';
-import 'package:readbookapp/src/resouces/sign_in.dart';
 
-import '../../animations/fade_animations.dart';
 import '../../loading/loading.dart';
-import 'home_page.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
@@ -23,8 +16,8 @@ class _DrawerPageState extends State<DrawerPage> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: const BoxDecoration(
+          const DrawerHeader(
+            decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.topRight,
@@ -34,7 +27,7 @@ class _DrawerPageState extends State<DrawerPage> {
               height: 200.0,
               child: Center(
                 child: Column(
-                  children: const <Widget>[
+                  children: <Widget>[
                     CircleAvatar(
                       radius: 40.0,
                       child: Icon(Icons.person, size: 50),
@@ -61,8 +54,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 const Duration(seconds: 2),
                 () {
                   LoadingDiaLog.hideDiaLog(context);
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const HomePage()));
+                  Navigator.of(context).pushNamed('/');
                 },
               );
             },
@@ -87,8 +79,7 @@ class _DrawerPageState extends State<DrawerPage> {
                 const Duration(seconds: 2),
                 () {
                   LoadingDiaLog.hideDiaLog(context);
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const ProfilePage()));
+                  Navigator.of(context).pushNamed('/sign-in');
                 },
               );
             },
@@ -105,16 +96,15 @@ class _DrawerPageState extends State<DrawerPage> {
                 const Duration(seconds: 2),
                 () {
                   LoadingDiaLog.hideDiaLog(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const FavoriteBookPage()));
+                  Navigator.of(context).pushNamed('/favorite');
                 },
               );
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.favorite,
               color: Colors.red,
             ),
-            title: Text(
+            title: const Text(
               'Favorite',
               style: TextStyle(fontSize: 20),
             ),
@@ -131,15 +121,14 @@ class _DrawerPageState extends State<DrawerPage> {
                 const Duration(seconds: 2),
                 () {
                   LoadingDiaLog.hideDiaLog(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const CategoryBookPage()));
+                  Navigator.of(context).pushNamed('/category');
                 },
               );
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.category,
             ),
-            title: Text(
+            title: const Text(
               'Categories',
               style: TextStyle(fontSize: 20),
             ),
